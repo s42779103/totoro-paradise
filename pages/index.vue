@@ -90,10 +90,10 @@ const handleScanned = async () => {
     <VCardText>
       <div class="text-center mb-6">
         <p class="text-body-1 text-medium-emphasis">
-          古典时代的人发现人体是权力的对象和目标。……这种人体是被操纵、被塑造、被规训的。它服从，配合，变得灵巧、强壮。"人是机器"这部大书是在两个领域被同时撰写的。
+          多少事，从来急；天地转，光阴迫。一万年太久，只争朝夕。
         </p>
         <p class="text-caption text-medium-emphasis mt-2">
-          —— 米歇尔·福柯《规训与惩罚》
+          ————毛泽东《满江红·和郭沫若同志》
         </p>
       </div>
 

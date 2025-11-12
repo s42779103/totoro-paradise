@@ -58,30 +58,13 @@ const handleRun = async () => {
     },
   });
 
-  // 监听位置更新
-  const interval = setInterval(() => {
-    if (!running.value) {
-      clearInterval(interval);
-      return;
-    }
-    const progress = timePassed.value / needTime.value;
-    const pointCount = runRoute.mockRoute.length;
-    const currentIndex = Math.floor(progress * pointCount);
-
-    if (currentIndex >= pointCount) {
-      clearInterval(interval);
-      running.value = false;
-      return;
-    }
-
-    currentPosition.value = runRoute.mockRoute[currentIndex];
-  }, 1000);
-
-  // 设置结束时间
-  setTimeout(() => {
-    clearInterval(interval);
-    running.value = false;
-  }, needTime.value);
+  // 立即完成：将当前位置设为路线最后一点并标记为完成
+  const lastPoint = runRoute.mockRoute[runRoute.mockRoute.length - 1];
+  currentPosition.value = lastPoint;
+  // 把 startTime 调整为已用完 needTime，使 timePassed === needTime，UI 显示为完成
+  startTime.value = new Date(Number(now.value) - Number(needTime.value));
+  running.value = false;
+  // 不再创建 interval / timeout
 };
 onMounted(() => {
   window.addEventListener('beforeunload', handleBeforeUnload);
@@ -141,8 +124,14 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
                 <div class="text-h6">{{ Math.ceil((timePassed / needTime) * 100) }}%</div>
               </div>
             </div>
-            <VProgressLinear v-if="timePassed && needTime" color="primary" :model-value="(timePassed / needTime) * 100"
-              height="8" rounded class="mb-4" />
+            <VProgressLinear
+              v-if="timePassed && needTime"
+              color="primary"
+              :model-value="(timePassed / needTime) * 100"
+              height="8"
+              rounded
+              class="mb-4"
+            />
             <div class="text-caption text-medium-emphasis">
               <VIcon size="small" class="mr-1">mdi-information</VIcon>
               请保持页面打开，直到跑步完成
@@ -167,8 +156,12 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
         <VCardText class="pa-4">
           <div class="map-container rounded-lg overflow-hidden">
             <ClientOnly>
-              <AMap :target="route" :running="running" :current-position="currentPosition"
-                @update:target="handleUpdate" />
+              <AMap
+                :target="route"
+                :running="running"
+                :current-position="currentPosition"
+                @update:target="handleUpdate"
+              />
             </ClientOnly>
           </div>
         </VCardText>
