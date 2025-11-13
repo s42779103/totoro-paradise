@@ -12,8 +12,7 @@ window.global = window;
 </script>
 <template>
   <VApp>
-
-    <VMain class="bg-grey-lighten-4">
+    <VMain>
       <VContainer class="py-6">
         <NuxtPage />
         <VFooter class="mt-8 text-center text-caption text-medium-emphasis">
@@ -23,3 +22,11 @@ window.global = window;
     </VMain>
   </VApp>
 </template>
+
+<style>
+/* 使用 Vuetify 提供的主题变量作为页面背景，支持深/浅色切换 */
+html, body, #__nuxt, #app, .v-application {
+  background-color: var(--v-theme-background, #ffffff) !important;
+  color-scheme: var(--v-theme-color-scheme, light);
+}
+</style>
