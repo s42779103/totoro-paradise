@@ -128,9 +128,7 @@ const handleScanned = async () => {
           下一步
         </VBtn>
 
-        <div class="text-body-2 pre-wrap text-medium-emphasis">
-          {{ poem[Math.floor(Math.random() * poem.length)].join('\n') }}
-        </div>
+
       </div>
     </VCardText>
   </VCard>

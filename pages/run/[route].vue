@@ -119,19 +119,24 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
                 <div class="text-caption text-medium-emphasis mb-1">已用时间</div>
                 <div class="text-h6">{{ timePassed }}/{{ needTime }}</div>
               </div>
-              <div class="text-right">
-                <div class="text-caption text-medium-emphasis mb-1">完成进度</div>
-                <div class="text-h6">{{ Math.ceil((timePassed / needTime) * 100) }}%</div>
-              </div>
             </div>
             <VProgressLinear
               v-if="timePassed && needTime"
-              color="primary"
-              :model-value="(timePassed / needTime) * 100"
-              height="8"
-              rounded
-              class="mb-4"
-            />
+            >
+              <div class="d-flex align-center mb-4">
+                <VProgressCircular
+                  :model-value="(timePassed / needTime) * 100"
+                  size="48"
+                  width="6"
+                  color="primary"
+                  class="mr-4"
+                />
+                <div>
+                  <div class="text-caption text-medium-emphasis mb-1">完成进度</div>
+                  <div class="text-h6">{{ Math.ceil((timePassed / needTime) * 100) }}%</div>
+                </div>
+              </div>
+            </VProgressLinear>
             <div class="text-caption text-medium-emphasis">
               <VIcon size="small" class="mr-1">mdi-information</VIcon>
               请保持页面打开，直到跑步完成
