@@ -1,6 +1,8 @@
 
 # Totoro-paradise
 
+取消了等待时间
+
 Fuck `totoro school`, without MITM.
 
 The name is netaed from `nekopara`.
