@@ -16,7 +16,19 @@ const { params } = useRoute();
 const session = useSession();
 const { route } = params as { route: string };
 const runned = computed(() => !running.value && !!needTime.value);
-const target = computed(() => sunRunPaper.value.runPointList.find((r) => r.pointId === route)!);
+const target = computed(() => {
+  // 自由跑模式
+  if (route === 'free_run') {
+    return { 
+      pointId: 'free_run', 
+      pointName: '自由跑', 
+      taskId: 'free_run', 
+      pointList: [] 
+    };
+  }
+  // 普通路线模式
+  return sunRunPaper.value.runPointList.find((r) => r.pointId === route)!;
+});
 const currentPosition = ref<{ longitude: number; latitude: number } | null>(null);
 
 const handleRun = async () => {
@@ -60,7 +72,10 @@ const handleRun = async () => {
 
   // 立即完成：将当前位置设为路线最后一点并标记为完成
   const lastPoint = runRoute.mockRoute[runRoute.mockRoute.length - 1];
-  currentPosition.value = lastPoint;
+  currentPosition.value = {
+    longitude: Number(lastPoint.longitude),
+    latitude: Number(lastPoint.latitude)
+  };
   // 把 startTime 调整为已用完 needTime，使 timePassed === needTime，UI 显示为完成
   startTime.value = new Date(Number(now.value) - Number(needTime.value));
   running.value = false;
@@ -79,6 +94,12 @@ function handleBeforeUnload(e: BeforeUnloadEvent) {
     e.preventDefault();
   }
 }
+
+// 处理地图组件的路线切换事件
+const handleUpdate = (newRoute: string) => {
+  // 可以在这里添加路线切换的处理逻辑
+  console.log('Route updated:', newRoute);
+};
 </script>
 <template>
   <VCard class="pa-4">

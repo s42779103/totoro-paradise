@@ -7,7 +7,7 @@ export default interface RunPoint {
   taskId: string;
   pointId: string;
   pointName: string;
-  longitude: string;
-  latitude: string;
+  longitude?: string;
+  latitude?: string;
   pointList: Point[];
 }

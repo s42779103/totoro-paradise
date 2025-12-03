@@ -35,11 +35,51 @@ const generateRoute = (distance: string, taskToday: RunPoint) => {
     return points;
   };
 
-  /** 输入一个标准路径数组，返回添加完路径点后的标准路径 */
+  /** 为自由跑生成随机闭合路线 */
+  const generateFreeRunRoute = (): Point[] => {
+    // 使用固定中心点或随机中心点
+    const center: Point = [116.397428, 39.90923]; // 默认中心点（北京）
+    const radius = 0.01; // 约1公里范围
+    
+    // 生成10-15个随机点，形成一个闭合区域
+    const pointsCount = 10 + Math.floor(Math.random() * 6);
+    const points: Point[] = [];
+    
+    for (let i = 0; i < pointsCount; i++) {
+      const angle = (i / pointsCount) * 2 * Math.PI;
+      const randomRadius = radius * Math.random();
+      const point: Point = [
+        center[0] + randomRadius * Math.cos(angle),
+        center[1] + randomRadius * Math.sin(angle)
+      ];
+      points.push(point);
+    }
+    
+    // 闭合路线
+    points.push(points[0]);
+    
+    // 添加点之间的中间点
+    const combinedPoints: Point[] = [];
+    for (let i = 0; i < points.length - 1; i++) {
+      const pointA = points[i];
+      const pointB = points[i + 1];
+      const segmentPoints = addPoints(pointA, pointB);
+      combinedPoints.push(...segmentPoints);
+    }
+    
+    return combinedPoints;
+  };
 
+  /** 输入一个标准路径数组，返回添加完路径点后的标准路径 */
   const combinePoints = (): Point[] => {
+    // 自由跑模式
+    if (taskToday.pointId === 'free_run') {
+      return generateFreeRunRoute();
+    }
+    
+    // 普通路线模式
     const { pointList } = taskToday;
-    if (!pointList[0].latitude) throw new Error('任务为空');
+    if (!pointList[0]?.latitude) throw new Error('任务为空');
     const route = formatRouteToAMap(pointList);
     const combinedPoints = [];
     for (let index = 0; index < route.length; index += 1) {

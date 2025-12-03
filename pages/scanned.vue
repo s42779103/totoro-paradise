@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
 
 const sunrunPaper = useSunRunPaper();
@@ -35,6 +36,13 @@ onMounted(() => {
 const handleUpdate = (target: string) => {
   selectValue.value = target;
 };
+
+const routeItems = computed(() => {
+  // 添加自由跑选项
+  const items = [...(data.value?.runPointList || [])];
+  items.unshift({ pointId: 'free_run', pointName: '自由跑', taskId: 'free_run', pointList: [] });
+  return items;
+});
 
 const handleRandomSelect = () => {
   if (!data.value?.runPointList?.length) return;
@@ -83,7 +91,7 @@ const handleRandomSelect = () => {
         </div>
       </template>
       <template v-else-if="data">
-        <VSelect v-model="selectValue" :items="data.runPointList" item-title="pointName" item-value="pointId"
+        <VSelect v-model="selectValue" :items="routeItems" item-title="pointName" item-value="pointId"
           variant="outlined" label="选择路线" class="mb-4" :menu-props="{ maxHeight: '300px' }">
           <template #prepend-inner>
             <VIcon>mdi-map-marker</VIcon>
