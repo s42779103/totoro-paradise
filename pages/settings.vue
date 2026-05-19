@@ -17,8 +17,6 @@ const handleCopyToken = async () => {
 }
 
 const handleClearSession = () => {
-  localStorage.removeItem('totoroSession')
-  localStorage.removeItem('sunRunPaper')
   session.value.token = ''
   router.push('/')
 }
