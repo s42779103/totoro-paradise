@@ -5,15 +5,17 @@ Fuck `totoro school`, without MITM.
 
 The name is netaed from `nekopara`.
 
+> 编者按：nekopara是对的
 ## 功能
 
-- **阳光跑** — 路线选择 + 模拟轨迹 + 自动提交打卡（支持自选时间）
+- **阳光跑** — 路线选择 + 模拟轨迹 + 提交
 - **早操签到** — 签到点选择 + 自动提交（QR 码由服务端下发）
-- **自由跑** — 同阳光跑，`runType=2`
-- **凭据持久化** — 登录态 localStorage 保存，刷新不丢
+- **自由跑** — 同阳光跑，`runType=1`
+> 编者按：路线绘制先不做了，用默认3.2km挺好的
 - **自动打卡** — Vercel Cron 定时早操签到（需配环境变量，接口已留）
+> 编者按：这里有一个问题，龙猫的JWT token生命周期很短，无法自动化，未来尝试用手机号获取token
 - **设置页** — 查看/复制 token，清除登录
-
+> 编者按：用处不大，在ui界面隐藏，/settings页面能访问
 ## How to build
 
 ```bash
@@ -49,3 +51,5 @@ pnpm dev
 ## License
 
 [AGPL-3.0](LICENSE)
+
+
