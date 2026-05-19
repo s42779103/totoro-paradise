@@ -16,6 +16,10 @@ const currentPosition = ref<{ longitude: number; latitude: number } | null>(null
 const sunRunPaper = useSunRunPaper()
 const session = useSession()
 const routeObj = useRoute()
+
+if (!session.value.token) {
+  await navigateTo('/')
+}
 const { params, query } = routeObj as { params: { route: string }; query: { type?: string } }
 const { route } = params
 const isFreeRun = computed(() => query.type === 'free')
@@ -48,6 +52,7 @@ const handleRun = async () => {
     schoolId: session.value.schoolId,
     stuNumber: session.value.stuNumber,
     phoneNumber: session.value.phoneNumber,
+    headImage: session.value.headPortrait || '',
     minTime: paper.minTime,
     maxTime: paper.maxTime,
     runType: runType.value,

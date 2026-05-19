@@ -21,7 +21,6 @@ const checkScanStatus = async () => {
 
     if (code) {
       isPolling.value = false;
-      console.log('[Login] 轮询中...')
       message.value = '扫码成功，正在登录...';
       console.log('[Login] 微信扫码成功, code:', code.substring(0, 10) + '...')
 
@@ -85,13 +84,6 @@ onUnmounted(() => {
   isPolling.value = false;
 });
 
-// 保留原有的handleScanned作为备选方案
-const handleScanned = async () => {
-  if (!isPolling.value) {
-    isPolling.value = true;
-    checkScanStatus();
-  }
-};
 </script>
 <template>
   <VCard class="pa-4">
@@ -108,7 +100,7 @@ const handleScanned = async () => {
       <VDivider class="my-6" />
 
       <div class="text-center mb-6">
-        <p class="text-body-1 mb-4">请用微信扫码，扫码后点击"下一步"按钮</p>
+        <p class="text-body-1 mb-4">请用微信扫码，自动登录</p>
         <VCard :height="200" :width="200" class="mx-auto mb-4" variant="outlined">
           <VCardItem class="h-100 pa-0">
             <template v-if="isLoading">
@@ -127,14 +119,6 @@ const handleScanned = async () => {
         <VAlert v-if="errorMessage" type="error" variant="tonal" class="mb-4">
           {{ errorMessage }}
         </VAlert>
-
-        <VBtn color="primary" size="large" class="mb-6" @click="handleScanned" :loading="isLoading"
-          :disabled="isLoading">
-          <template v-slot:prepend>
-            <VIcon>mdi-arrow-right</VIcon>
-          </template>
-          下一步
-        </VBtn>
 
 
       </div>

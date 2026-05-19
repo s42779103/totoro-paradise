@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
 
+const router = useRouter();
 const sunrunPaper = useSunRunPaper();
 const session = useSession();
 const selectValue = ref('');
@@ -8,7 +9,13 @@ const isLoading = ref(false);
 const errorMessage = ref('');
 const data = ref(null);
 
+const hasRunToday = computed(() => data.value?.ifHasRun === '1')
+
 const fetchData = async () => {
+  if (!session.value.token) {
+    router.push('/')
+    return
+  }
   try {
     isLoading.value = true;
     errorMessage.value = '';
@@ -85,6 +92,12 @@ const handleRandomSelect = () => {
         </div>
       </template>
       <template v-else-if="data">
+        <VAlert v-if="hasRunToday" color="success" variant="tonal" class="mb-4">
+          <template #prepend><VIcon>mdi-check-circle</VIcon></template>
+          今日跑步已完成
+        </VAlert>
+
+        <template v-if="!hasRunToday">
         <VSelect v-model="selectValue" :items="data.runPointList" item-title="pointName" item-value="pointId"
           variant="outlined" label="选择路线" class="mb-4" :menu-props="{ maxHeight: '300px' }">
           <template #prepend-inner>
@@ -115,6 +128,7 @@ const handleRandomSelect = () => {
             开始跑步
           </VBtn>
         </div>
+        </template>
 
         <VCard variant="outlined" class="mb-4">
           <VCardTitle class="text-subtitle-2 pa-4 pb-0">
