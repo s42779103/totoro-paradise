@@ -26,9 +26,8 @@ const checkScanStatus = async () => {
       console.log('[Login] 微信扫码成功, code:', code.substring(0, 10) + '...')
 
       console.log('[Login] 步骤1: 获取服务器 token...')
-      const loginResult = (
-        await Promise.all([TotoroApiWrapper.getLesseeServer(code), TotoroApiWrapper.getAppAd(code)])
-      )[0];
+      const loginResult = await TotoroApiWrapper.getLesseeServer(code);
+      TotoroApiWrapper.getAppAd(code).catch(() => {});
 
       if (!loginResult.token) {
         console.warn('[Login] getLesseeServer 失败:', loginResult.message)
