@@ -1,4 +1,4 @@
-﻿<script setup lang="ts">
+<script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
 
 const router = useRouter();
@@ -71,19 +71,12 @@ const checkScanStatus = async () => {
   }
 };
 
-// 开始轮询检测
-watch(data, (newData) => {
-  if (newData?.uuid && !isPolling.value) {
+const handleScanned = async () => {
+  if (!isPolling.value) {
     isPolling.value = true;
     checkScanStatus();
   }
-});
-
-// 组件卸载时停止轮询
-onUnmounted(() => {
-  isPolling.value = false;
-});
-
+};
 </script>
 <template>
   <VCard class="pa-4">
@@ -100,7 +93,7 @@ onUnmounted(() => {
       <VDivider class="my-6" />
 
       <div class="text-center mb-6">
-        <p class="text-body-1 mb-4">请用微信扫码，自动登录</p>
+        <p class="text-body-1 mb-4">请用微信扫码，扫码后点击"下一步"按钮</p>
         <VCard :height="200" :width="200" class="mx-auto mb-4" variant="outlined">
           <VCardItem class="h-100 pa-0">
             <template v-if="isLoading">
@@ -120,7 +113,13 @@ onUnmounted(() => {
           {{ errorMessage }}
         </VAlert>
 
-
+        <VBtn color="primary" size="large" class="mb-6" @click="handleScanned" :loading="isLoading"
+          :disabled="isLoading">
+          <template v-slot:prepend>
+            <VIcon>mdi-arrow-right</VIcon>
+          </template>
+          下一步
+        </VBtn>
       </div>
     </VCardText>
   </VCard>
