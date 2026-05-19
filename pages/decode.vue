@@ -11,14 +11,15 @@ const decoded = computed(() => {
     return 'Failed';
   }
 });
-const encrypted = computed(() => {
+const encrypted = ref('');
+watch(decoded, async () => {
   try {
-    return encryptRequestContent(decoded.value === 'Failed' ? {} : decoded.value);
+    encrypted.value = await encryptRequestContent(decoded.value === 'Failed' ? {} : decoded.value);
   } catch (e) {
     console.error(e);
-    return 'Failed';
+    encrypted.value = 'Failed';
   }
-});
+}, { immediate: true });
 </script>
 <template>
   <VTextarea v-model="encoded" variant="outlined" />

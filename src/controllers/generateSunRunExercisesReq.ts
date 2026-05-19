@@ -1,7 +1,6 @@
 import { format, intervalToDuration } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import type SunRunExercisesRequest from '../types/requestTypes/SunRunExercisesRequest';
-import calCalculator from '../utils/calCalculator';
 import generateMac from '../utils/generateMac';
 import normalRandom from '../utils/normalRandom';
 import timeUtil from '../utils/timeUtil';

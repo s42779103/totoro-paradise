@@ -17,8 +17,7 @@ const checkScanStatus = async () => {
     isLoading.value = true;
     errorMessage.value = '';
     const scanRes = await $fetch(`/api/scanQr/${data.value.uuid}`);
-    const code = (scanRes as { code: string; message: null } | { code: null; message: string })
-      .code as string;
+    const code = (scanRes as Record<string, unknown>).code as string | null;
 
     if (code) {
       isPolling.value = false;

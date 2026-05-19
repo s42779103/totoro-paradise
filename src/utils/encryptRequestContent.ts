@@ -24,7 +24,7 @@ const encryptRequestContent = async (req: Record<string, any>): Promise<string> 
 
   // 客户端：nodeRSA 浏览器库（内部自带分段）
   const { default: NodeRSA } = await import('./nodeRSA')
-  const rsa = new NodeRSA(rsaKeys.privateKey)
+  const rsa = new NodeRSA(rsaKeys.publicKey)
   rsa.setOptions({ encryptionScheme: 'pkcs1' })
   return rsa.encrypt(reqStr, 'base64')
 }

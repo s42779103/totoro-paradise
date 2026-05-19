@@ -39,6 +39,7 @@ const generateRoute = (distance: string, taskToday: RunPoint) => {
 
   const combinePoints = (): Point[] => {
     const { pointList } = taskToday;
+    if (!pointList || pointList.length === 0) throw new Error('任务为空');
     if (!pointList[0].latitude) throw new Error('任务为空');
     const route = formatRouteToAMap(pointList);
     const combinedPoints = [];

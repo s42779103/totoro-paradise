@@ -3,11 +3,7 @@
  * @param std 标准差
  */
 const normalRandom = (mean: number, std: number) => {
-  let u = 0.0;
-  let v = 0.0;
-  let w = 0.0;
-  let c = 0.0;
-  let result = mean + u * c * std;
+  let u: number, v: number, w: number, c: number, result: number;
   do {
     u = Math.random() * 2 - 1.0;
     v = Math.random() * 2 - 1.0;
