@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import TotoroApiWrapper from '~/src/wrappers/TotoroApiWrapper';
 
 const router = useRouter();
@@ -21,6 +21,7 @@ const checkScanStatus = async () => {
 
     if (code) {
       isPolling.value = false;
+      console.log('[Login] 轮询中...')
       message.value = '扫码成功，正在登录...';
       console.log('[Login] 微信扫码成功, code:', code.substring(0, 10) + '...')
 
@@ -71,6 +72,20 @@ const checkScanStatus = async () => {
   }
 };
 
+// 开始轮询检测
+watch(data, (newData) => {
+  if (newData?.uuid && !isPolling.value) {
+    isPolling.value = true;
+    checkScanStatus();
+  }
+});
+
+// 组件卸载时停止轮询
+onUnmounted(() => {
+  isPolling.value = false;
+});
+
+// 保留原有的handleScanned作为备选方案
 const handleScanned = async () => {
   if (!isPolling.value) {
     isPolling.value = true;
@@ -120,6 +135,8 @@ const handleScanned = async () => {
           </template>
           下一步
         </VBtn>
+
+
       </div>
     </VCardText>
   </VCard>
